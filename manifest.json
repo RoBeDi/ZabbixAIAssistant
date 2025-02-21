@@ -1,0 +1,22 @@
+{
+    "manifest_version": 2.0,
+    "id": "insights",
+    "type": "widget",
+    "name": "Insights Dashboard",
+    "namespace": "InsightsNamespace",
+    "version": "1.0",
+    "author": "RoBeDi",
+    "description": "Insights Module for Zabbix, based on improvements to the Monzphere and ccaceresoln repository. Mostly translated to English.",
+    "widget": {
+        "js_class": "WidgetInsightsJs",
+        "view":"class.widget"
+    },
+    "assets": {
+        "js": ["class.widget.php.js"]
+    },
+    "homepage": "https://github.com/RoBeDi/Zabbix_AI_Assistant",
+    "support": {
+        "email": "rvtkruys@outlook.com",
+        "url": "https://github.com/robedi"
+    }
+}
