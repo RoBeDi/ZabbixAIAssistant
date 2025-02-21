@@ -21,7 +21,7 @@
 	- **Type:** Webhook
 	- **Parameters:** 
 		- **Name:** alert_subject - **Value:** {TRIGGER.NAME}
-		- **Name:** api_key - **Value:** _<API key>_
+		- **Name:** api_key - **Value:** <API key>
 	- **Script:** *Copy and paste the script content from [Script AI Help](https://github.com/RoBeDi/ZabbixAIAssistant/raw/refs/heads/main/script)*
 
 ![image](/images/Create_script.gif)
