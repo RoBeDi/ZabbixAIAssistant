@@ -19,7 +19,7 @@ class WidgetInsightsJs extends CWidget {
                     <option value="Forecast">Forecast</option>
                     <option value="What would you do?">What would you do?</option>
                 </select>
-                <button id="analyseBtn">Analizar</button>
+                <button id="analyseBtn">Analyse</button>
             </div>
             <div id="dashboard-container" class="dashboard-grid" style="height: 300px;">
                 <div id="outputContainer" style="margin-top: 20px; border: 1px solid #ccc; padding: 10px; border-radius: 5px; background-color: #f9f9f9; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);"></div>
