@@ -5,7 +5,7 @@ class WidgetInsightsJs extends CWidget {
         this._outputContainer = null;
         this._analyseBtn = null;
     }
-	
+
 	_getCurrentTheme() {
 		if (document.body.classList.contains('theme-dark')) {
 			return 'dark';
@@ -18,7 +18,7 @@ class WidgetInsightsJs extends CWidget {
 	_applyThemeStyles() {
 		const theme = this._getCurrentTheme();
 		const outputContainer = this._body.querySelector('#outputContainer');
-		
+
 		const themeStyles = {
 			dark: {
 				background: '#1e1e2e',
@@ -154,53 +154,53 @@ class WidgetInsightsJs extends CWidget {
         return prompts[analysisType];
     }
 
-async _onAnalyseBtnClick() {
-    const analysisType = this._analysisType.value;
-    this._outputContainer.innerHTML = 'Analyzing...';
+	async _onAnalyseBtnClick() {
+		const analysisType = this._analysisType.value;
+		this._outputContainer.innerHTML = 'Analyzing...';
 
-    try {
-        // Load required scripts dynamically
-        await Promise.all([
-            this._loadHtml2Canvas(),
-            this._loadMarkedJs()
-        ]);
+		try {
+			// Load required scripts dynamically
+			await Promise.all([
+				this._loadHtml2Canvas(),
+				this._loadMarkedJs()
+			]);
 
-        const canvas = await html2canvas(document.querySelector('main'));
-        const dataUrl = canvas.toDataURL('image/png');
-        const base64Image = dataUrl.split(',')[1];
-        const prompt = this._getPromptForAnalysisType(analysisType);
+			const canvas = await html2canvas(document.querySelector('main'));
+			const dataUrl = canvas.toDataURL('image/png');
+			const base64Image = dataUrl.split(',')[1];
+			const prompt = this._getPromptForAnalysisType(analysisType);
 
-        const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=YOUR_API_KEY', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                contents: [{
-                    parts: [
-                        { text: prompt },
-                        {
-                            inline_data: {
-                                mime_type: "image/png",
-                                data: base64Image
-                            }
-                        }
-                    ]
-                }]
-            })
-        });
+			const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=YOUR_API_KEY', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					contents: [{
+						parts: [
+							{ text: prompt },
+							{
+								inline_data: {
+									mime_type: "image/png",
+									data: base64Image
+								}
+							}
+						]
+					}]
+				})
+			});
 
-        const responseData = await response.json();
-        const responseContent = responseData.candidates[0].content.parts[0].text;
+			const responseData = await response.json();
+			const responseContent = responseData.candidates[0].content.parts[0].text;
 
-        // Convert Markdown response to HTML
-        const htmlContent = marked.parse(responseContent);
+			// Convert Markdown response to HTML
+			const htmlContent = marked.parse(responseContent);
 
-        // Display formatted result
-        this._outputContainer.innerHTML = `<div class="markdown-body">${htmlContent}</div>`;
-    } catch (error) {
-        console.error('Error during analysis:', error);
-        this._outputContainer.innerHTML = '<div class="widget-error">An error occurred during analysis.</div>';
-    }
-}
+			// Display formatted result
+			this._outputContainer.innerHTML = `<div class="markdown-body">${htmlContent}</div>`;
+		} catch (error) {
+			console.error('Error during analysis:', error);
+			this._outputContainer.innerHTML = '<div class="widget-error">An error occurred during analysis.</div>';
+		}
+	}
 
 // Register the widget
 addWidgetClass(WidgetInsightsJs);
