@@ -1,4 +1,3 @@
-
 class WidgetInsightsJs extends CWidget {
     onInitialize() {
         super.onInitialize();
@@ -87,6 +86,28 @@ class WidgetInsightsJs extends CWidget {
         }
     }
 
+	_formatAnalysisOutput(text) {
+		const sections = text.split("**").filter(Boolean);
+		let formattedHtml = '<div style="padding:10px;line-height:1.6;">';
+
+		sections.forEach(section => {
+			const [title, ...contentParts] = section.split(":");
+			if (contentParts.length > 0) {
+				const content = contentParts.join(":").trim();
+				formattedHtml += `
+					<div style="margin-bottom:15px;">
+						<h3 style="margin-bottom:5px;">${title.trim()}</h3>
+						<p>${content}</p>
+					</div>`;
+			} else {
+				formattedHtml += `<p>${section.trim()}</p>`;
+			}
+		});
+
+		formattedHtml += '</div>';
+		return formattedHtml;
+	}
+
     _loadHtml2Canvas() {
         return new Promise((resolve, reject) => {
             if (typeof html2canvas !== 'undefined') {
@@ -155,7 +176,8 @@ class WidgetInsightsJs extends CWidget {
 
             // Adjusted to handle Gemini's response structure.
             const responseContent = responseData.candidates[0].content.parts[0].text;
-            this._outputContainer.innerHTML = `<div style="border: 1px solid #ccc; padding: 10px; border-radius: 5px; background-color: #f9f9f9;">${responseContent}</div>`;
+			// this._outputContainer.innerHTML = this._formatAnalysisOutput(responseContent);
+            this._outputContainer.innerHTML = `<div style="border: 1px solid #ccc; padding: 10px; border-radius: 5px; background-color: #f9f9f9; white-space: pre-wrap; word-wrap: break-word;">${responseContent}</div>`;
             console.log("Analysis result:", responseContent);
 
         } catch (error) {
