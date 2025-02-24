@@ -108,6 +108,26 @@ class WidgetInsightsJs extends CWidget {
 		return formattedHtml;
 	}
 
+	_loadMarkedJs() {
+		return new Promise((resolve, reject) => {
+			if (typeof marked !== 'undefined') {
+				return resolve();
+			}
+
+			const script = document.createElement('script');
+			script.src = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
+			script.onload = resolve;
+			script.onerror = reject;
+			document.head.appendChild(script);
+
+			// Optional: Include GitHub-style Markdown CSS for better readability
+			const link = document.createElement('link');
+			link.rel = 'stylesheet';
+			link.href = 'https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.min.css';
+			document.head.appendChild(link);
+		});
+	}
+
     _loadHtml2Canvas() {
         return new Promise((resolve, reject) => {
             if (typeof html2canvas !== 'undefined') {
@@ -134,56 +154,51 @@ class WidgetInsightsJs extends CWidget {
         return prompts[analysisType];
     }
 
-    async _onAnalyseBtnClick() {
-        console.log("Analyse button clicked...");
-        const analysisType = this._analysisType.value;
-        console.log("Selected analysis type:", analysisType);
-        this._outputContainer.innerHTML = 'Analyzing...';
+async _onAnalyseBtnClick() {
+    const analysisType = this._analysisType.value;
+    this._outputContainer.innerHTML = 'Analyzing...';
 
-        try {
-            console.log("Capturing the dashboard...");
-            const canvas = await html2canvas(document.querySelector('main'));
-            console.log("Canvas created:", canvas);
-            const dataUrl = canvas.toDataURL('image/png');
-            console.log("Data URL created");
+    try {
+        // Load required scripts dynamically
+        await Promise.all([
+            this._loadHtml2Canvas(),
+            this._loadMarkedJs()
+        ]);
 
-            const base64Image = dataUrl.split(',')[1];
-            const prompt = this._getPromptForAnalysisType(analysisType);
+        const canvas = await html2canvas(document.querySelector('main'));
+        const dataUrl = canvas.toDataURL('image/png');
+        const base64Image = dataUrl.split(',')[1];
+        const prompt = this._getPromptForAnalysisType(analysisType);
 
-            console.log("Sending captured image to Gemini API...");
-            const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=YOUR_API_KEY', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    contents: [{
-                        parts: [
-                            { text: prompt },
-                            {
-                                inline_data: {
-                                    mime_type: "image/png",
-                                    data: base64Image
-                                }
+        const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=YOUR_API_KEY', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                contents: [{
+                    parts: [
+                        { text: prompt },
+                        {
+                            inline_data: {
+                                mime_type: "image/png",
+                                data: base64Image
                             }
-                        ]
-                    }]
-                })
-            });
+                        }
+                    ]
+                }]
+            })
+        });
 
-            const responseData = await response.json();
-            console.log("Response from Gemini:", responseData);
+        const responseData = await response.json();
+        const responseContent = responseData.candidates[0].content.parts[0].text;
 
-            // Adjusted to handle Gemini's response structure.
-            const responseContent = responseData.candidates[0].content.parts[0].text;
-			// this._outputContainer.innerHTML = this._formatAnalysisOutput(responseContent);
-            this._outputContainer.innerHTML = `<div style="border: 1px solid #ccc; padding: 10px; border-radius: 5px; background-color: #f9f9f9; white-space: pre-wrap; word-wrap: break-word;">${responseContent}</div>`;
-            console.log("Analysis result:", responseContent);
+        // Convert Markdown response to HTML
+        const htmlContent = marked.parse(responseContent);
 
-        } catch (error) {
-            console.error('Error during analysis:', error);
-            this._outputContainer.innerHTML = '<div style="border: 1px solid #f00; padding: 10px; border-radius: 5px; background-color: #fee;">An error occurred during analysis.</div>';
-        }
+        // Display formatted result
+        this._outputContainer.innerHTML = `<div class="markdown-body">${htmlContent}</div>`;
+    } catch (error) {
+        console.error('Error during analysis:', error);
+        this._outputContainer.innerHTML = '<div class="widget-error">An error occurred during analysis.</div>';
     }
 }
 
