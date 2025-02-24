@@ -74,7 +74,7 @@ class WidgetInsightsJs extends CWidget {
 
 			this._applyThemeStyles();
 
-			// Observe theme changes dynamically
+			// Observe theme changes dynamically.
 			const observer = new MutationObserver(() => this._applyThemeStyles());
 			observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
 
