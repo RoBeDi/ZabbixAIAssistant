@@ -11,6 +11,7 @@
 > By following this approach, you can minimize risks and ensure smooth execution in production environments.
 
 ## Updates
+- Updated [class.widget.php.js](https://raw.githubusercontent.com/RoBeDi/ZabbixAIAssistant/refs/heads/main/assets/js/theme/class.widget.php.js) to enable the widget automatically adapt to its appearance to match the active Zabbix theme (Dark, Blue, or Default).
 
 ## Configuration Steps for AI Script
 1.	Create an account in Google AI Studio to obtain the required [API key](https://aistudio.google.com/app/apikey).
@@ -55,7 +56,8 @@ This concept integrates all the functionalities present in the widget (including
 	-	Use the following command: `sudo curl -o manifest.json https://raw.githubusercontent.com/RoBeDi/ZabbixAIAssistant/refs/heads/main/manifest.json `
 4.	Download the **class.widget.php.js** file in the **js** directory
 	-	Use the following command: `sudo curl -o class.widget.php.js https://raw.githubusercontent.com/RoBeDi/ZabbixAIAssistant/refs/heads/main/assets/js/class.widget.php.js `
-	-	Replace **YOUR_API_KEY** with your Google API key (line 84)
+	-	Alternatively; use the [class.widget.php.js](https://raw.githubusercontent.com/RoBeDi/ZabbixAIAssistant/refs/heads/main/assets/js/theme/class.widget.php.js) to dynamically adapt to the theme. Command: `sudo curl -o class.widget.php.js https://raw.githubusercontent.com/RoBeDi/ZabbixAIAssistant/refs/heads/main/assets/js/theme/class.widget.php.js `
+	-	Replace **YOUR_API_KEY** with your Google API key
 5.	On the Zabbix portal, go to **Administration | General | Modules** and click the **Scan directory** button.
 	-	The **Insights Dashboard** module is visible, but requires to be enabled.
 6. In any available dashboard or a newly created dashboard, add the new widget **Insights Dashboard** and see the results.
