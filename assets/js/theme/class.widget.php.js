@@ -74,7 +74,7 @@ class WidgetInsightsJs extends CWidget {
 
 			this._applyThemeStyles();
 
-			// Observe theme changes dynamically.
+			// Observe theme changes dynamically
 			const observer = new MutationObserver(() => this._applyThemeStyles());
 			observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
 
@@ -201,6 +201,7 @@ class WidgetInsightsJs extends CWidget {
 			this._outputContainer.innerHTML = '<div class="widget-error">An error occurred during analysis.</div>';
 		}
 	}
+}
 
 // Register the widget
 addWidgetClass(WidgetInsightsJs);
