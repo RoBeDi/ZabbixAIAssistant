@@ -10,6 +10,11 @@
 > 
 > By following this approach, you can minimize risks and ensure smooth execution in production environments.
 
+This AI widget is based on [Creating a Personal Assistant in Zabbix with Artificial Intelligence](https://blog.zabbix.com/creating-a-personal-assistant-in-zabbix-with-artificial-intelligence/29596/), written by Cesar Caceres. Since I like to work with dark screens, I attempted to improve the widget a bit. I have tested it fully and use it, at the moment, in production.
+
+> [!NOTE]
+> I am still figuring out on how to solve the issue, where the numbered list of the proactive actions are not aligned (What would you do?).
+
 ## Updates
 - Updated [class.widget.php.js](https://raw.githubusercontent.com/RoBeDi/ZabbixAIAssistant/refs/heads/main/assets/js/theme/class.widget.php.js) to enable the widget automatically adapt to its appearance to match the active Zabbix theme (Dark, Blue, or Default).
 
@@ -57,7 +62,8 @@ This concept integrates all the functionalities present in the widget (including
 4.	Download the **class.widget.php.js** file in the **js** directory
 	-	Use the following command: `sudo curl -o class.widget.php.js https://raw.githubusercontent.com/RoBeDi/ZabbixAIAssistant/refs/heads/main/assets/js/class.widget.php.js `
 	-	Alternatively; use the [class.widget.php.js](https://raw.githubusercontent.com/RoBeDi/ZabbixAIAssistant/refs/heads/main/assets/js/theme/class.widget.php.js) to dynamically adapt to the theme. Command: `sudo curl -o class.widget.php.js https://raw.githubusercontent.com/RoBeDi/ZabbixAIAssistant/refs/heads/main/assets/js/theme/class.widget.php.js `
-	-	Replace **YOUR_API_KEY** with your Google API key
-5.	On the Zabbix portal, go to **Administration | General | Modules** and click the **Scan directory** button.
+5.	In the **js** directory, edit the **class.widget.php.js** file and replace **YOUR_API_KEY** with your own Google API key
+	-	Use the following command: `sudo nano class.widget.php.js`
+6.	On the Zabbix portal, go to **Administration | General | Modules** and click the **Scan directory** button.
 	-	The **Insights Dashboard** module is visible, but requires to be enabled.
-6. In any available dashboard or a newly created dashboard, add the new widget **Insights Dashboard** and see the results.
+7. In any available dashboard or a newly created dashboard, add the new widget **Insights Dashboard** and see the results.
