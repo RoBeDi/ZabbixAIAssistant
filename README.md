@@ -10,10 +10,10 @@
 > 
 > By following this approach, you can minimize risks and ensure smooth execution in production environments.
 
-This AI widget is based on [Creating a Personal Assistant in Zabbix with Artificial Intelligence](https://blog.zabbix.com/creating-a-personal-assistant-in-zabbix-with-artificial-intelligence/29596/), written by Cesar Caceres. Since I like to work with dark screens, I attempted to improve the widget a bit. I have tested it fully and use it, at the moment, in production.
+This AI widget is based on [Creating a Personal Assistant in Zabbix with Artificial Intelligence](https://blog.zabbix.com/creating-a-personal-assistant-in-zabbix-with-artificial-intelligence/29596/), written by Cesar Caceres. Since I like to work with dark screens, I attempted to improve the widget a bit. I have tested it fully and use it, at the moment, in production. The widget will not automatically adjust to any configured theme in Zabbix, presents the information in a readable context and displays the font size properly.
 
 > [!NOTE]
-> I am still figuring out on how to solve the issue, where the numbered list of the proactive actions are not aligned (What would you do?).
+> I am still figuring out on how to solve the issue, where the numbered list of the proactive actions are not aligned ("What would you do?" analyse option).
 
 ## Updates
 - Updated [class.widget.php.js](https://raw.githubusercontent.com/RoBeDi/ZabbixAIAssistant/refs/heads/main/assets/js/theme/class.widget.php.js) to enable the widget automatically adapt to its appearance to match the active Zabbix theme (Dark, Blue, or Default).
