@@ -42,6 +42,7 @@ class WidgetInsightsJs extends CWidget {
 
 		const styles = themeStyles[theme];
 
+		outputContainer.style.padding = '5px';
 		outputContainer.style.backgroundColor = styles.background;
 		outputContainer.style.color = styles.color;
 		outputContainer.style.border = `1px solid ${styles.border}`;
@@ -116,11 +117,17 @@ class WidgetInsightsJs extends CWidget {
 
 			const script = document.createElement('script');
 			script.src = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
-			script.onload = resolve;
+			script.onload = () => {
+				// Inject CSS to override font size to 10px
+				const style = document.createElement('style');
+				style.textContent = `.markdown-body { font-size: 10px !important; }`;
+				document.head.appendChild(style);
+				resolve();
+			};
 			script.onerror = reject;
 			document.head.appendChild(script);
 
-			// Optional: Include GitHub-style Markdown CSS for better readability
+			// Load GitHub Markdown CSS
 			const link = document.createElement('link');
 			link.rel = 'stylesheet';
 			link.href = 'https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.min.css';
